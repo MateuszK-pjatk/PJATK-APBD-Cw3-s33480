@@ -164,7 +164,10 @@ public sealed class ZadaniaLinq
     /// </summary>
     public IEnumerable<string> Zadanie09_TrzyNajnowszeZapisy()
     {
-        throw Niezaimplementowano(nameof(Zadanie09_TrzyNajnowszeZapisy));
+        return DaneUczelni.Zapisy
+            .OrderByDescending(z => z.DataZapisu)
+            .Take(3)
+            .Select(z => $"{z.DataZapisu} {z.StudentId} {z.PrzedmiotId}");
     }
 
     /// <summary>
@@ -180,7 +183,11 @@ public sealed class ZadaniaLinq
     /// </summary>
     public IEnumerable<string> Zadanie10_DrugaStronaPrzedmiotow()
     {
-        throw Niezaimplementowano(nameof(Zadanie10_DrugaStronaPrzedmiotow));
+        return DaneUczelni.Przedmioty
+            .OrderBy(p => p.Nazwa)
+            .Skip(2)
+            .Take(2)
+            .Select(p => $"{p.Nazwa} {p.Kategoria}");
     }
 
     /// <summary>
@@ -195,7 +202,13 @@ public sealed class ZadaniaLinq
     /// </summary>
     public IEnumerable<string> Zadanie11_PolaczStudentowIZapisy()
     {
-        throw Niezaimplementowano(nameof(Zadanie11_PolaczStudentowIZapisy));
+        return DaneUczelni.Studenci
+            .Join(
+                DaneUczelni.Zapisy,
+                student => student.Id,
+                zapis => zapis.StudentId,
+                (student, zapis) => $"{student.Imie} {student.Nazwisko} {zapis.DataZapisu}"
+            );
     }
 
     /// <summary>
@@ -211,7 +224,18 @@ public sealed class ZadaniaLinq
     /// </summary>
     public IEnumerable<string> Zadanie12_ParyStudentPrzedmiot()
     {
-        throw Niezaimplementowano(nameof(Zadanie12_ParyStudentPrzedmiot));
+        return DaneUczelni.Zapisy
+            .Join(
+                DaneUczelni.Studenci,
+                zapis => zapis.StudentId,
+                student => student.Id,
+                (zapis, student) => new { Zapis = zapis, Student = student })
+            .Join(
+                DaneUczelni.Przedmioty,
+                wynikTymczasowy => wynikTymczasowy.Zapis.PrzedmiotId,
+                przedmiot => przedmiot.Id,
+                (wynikTymczasowy, przedmiot) =>
+                    $"{{wynikTymczasowy.Student.Imie}} {{wynikTymczasowy.Student.Nazwisko}} {{przedmiot.Nazwa}}");
     }
 
     /// <summary>
