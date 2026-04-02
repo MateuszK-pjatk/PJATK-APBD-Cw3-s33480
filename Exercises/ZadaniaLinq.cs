@@ -91,7 +91,11 @@ public sealed class ZadaniaLinq
     /// </summary>
     public IEnumerable<string> Zadanie05_CzyIstniejeNieaktywneZapisanie()
     {
-        throw Niezaimplementowano(nameof(Zadanie05_CzyIstniejeNieaktywneZapisanie));
+        return DaneUczelni.Zapisy
+            .Where(z => z.CzyAktywny == false) 
+            .Select(z => "Tak")
+            .Take(1)
+            .DefaultIfEmpty("Nie");
     }
 
     /// <summary>
@@ -106,7 +110,11 @@ public sealed class ZadaniaLinq
     /// </summary>
     public IEnumerable<string> Zadanie06_CzyWszyscyProwadzacyMajaKatedre()
     {
-        throw Niezaimplementowano(nameof(Zadanie06_CzyWszyscyProwadzacyMajaKatedre));
+        return DaneUczelni.Prowadzacy
+            .Where(p => string.IsNullOrEmpty(p.Katedra))
+            .Select(p => "Nie")
+            .Take(1)
+            .DefaultIfEmpty("Tak");
     }
 
     /// <summary>
@@ -120,7 +128,11 @@ public sealed class ZadaniaLinq
     /// </summary>
     public IEnumerable<string> Zadanie07_LiczbaAktywnychZapisow()
     {
-        throw Niezaimplementowano(nameof(Zadanie07_LiczbaAktywnychZapisow));
+        return DaneUczelni.Prowadzacy
+            .Where(p => string.IsNullOrEmpty(p.Katedra))
+            .Select(p => "Nie")
+            .Take(1)
+            .DefaultIfEmpty("Tak");
     }
 
     /// <summary>
@@ -134,7 +146,10 @@ public sealed class ZadaniaLinq
     /// </summary>
     public IEnumerable<string> Zadanie08_UnikalneMiastaStudentow()
     {
-        throw Niezaimplementowano(nameof(Zadanie08_UnikalneMiastaStudentow));
+        return DaneUczelni.Studenci
+            .Select(s => s.Miasto)
+            .Distinct()
+            .OrderBy(miasto => miasto);
     }
 
     /// <summary>
